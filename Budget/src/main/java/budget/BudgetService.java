@@ -1,7 +1,6 @@
 package budget;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
@@ -13,10 +12,6 @@ public class BudgetService {
 
     public BudgetService(BudgetRepo budgetRepo) {
         this.budgetRepo = budgetRepo;
-    }
-
-    private static BigDecimal getDailyAmount(Budget budget) {
-        return budget.getAmount().divide(new BigDecimal(budget.getYearMonthInstance().lengthOfMonth()), 0, RoundingMode.HALF_UP);
     }
 
     public BigDecimal totalAmount(LocalDate start, LocalDate end) {
@@ -35,7 +30,7 @@ public class BudgetService {
         }).map(budget -> {
 
             long days = new Period(start, end).overlappingDays(new Period(budget.firstDay(), budget.lastDay()));
-            BigDecimal dailyAmount = getDailyAmount(budget);
+            BigDecimal dailyAmount = budget.getDailyAmount();
             return dailyAmount.multiply(BigDecimal.valueOf(days));
         }).reduce(BigDecimal.ZERO, BigDecimal::add);
     }

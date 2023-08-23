@@ -1,6 +1,7 @@
 package budget;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
@@ -13,19 +14,6 @@ public class Budget {
     public Budget(String yearMonth, BigDecimal amount) {
         this.yearMonth = yearMonth;
         this.amount = amount;
-    }
-
-    LocalDate lastDay() {
-        return getYearMonthInstance().atEndOfMonth();
-    }
-
-    LocalDate firstDay() {
-        YearMonth budgetYearMonth = getYearMonthInstance();
-        return budgetYearMonth.atDay(1);
-    }
-
-    YearMonth getYearMonthInstance() {
-        return YearMonth.parse(getYearMonth(), DateTimeFormatter.ofPattern("yyyyMM"));
     }
 
     public String getYearMonth() {
@@ -42,5 +30,22 @@ public class Budget {
 
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
+    }
+
+    BigDecimal getDailyAmount() {
+        return getAmount().divide(new BigDecimal(getYearMonthInstance().lengthOfMonth()), 0, RoundingMode.HALF_UP);
+    }
+
+    LocalDate lastDay() {
+        return getYearMonthInstance().atEndOfMonth();
+    }
+
+    LocalDate firstDay() {
+        YearMonth budgetYearMonth = getYearMonthInstance();
+        return budgetYearMonth.atDay(1);
+    }
+
+    YearMonth getYearMonthInstance() {
+        return YearMonth.parse(getYearMonth(), DateTimeFormatter.ofPattern("yyyyMM"));
     }
 }
