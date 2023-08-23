@@ -1,4 +1,5 @@
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 
@@ -10,6 +11,11 @@ public class Budget {
     public Budget(String yearMonth, BigDecimal amount) {
         this.yearMonth = yearMonth;
         this.amount = amount;
+    }
+
+    LocalDate firstDay() {
+        YearMonth budgetYearMonth = getYearMonthInstance();
+        return budgetYearMonth.atDay(1);
     }
 
     YearMonth getYearMonthInstance() {
