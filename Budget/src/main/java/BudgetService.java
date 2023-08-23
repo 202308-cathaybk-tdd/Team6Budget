@@ -27,14 +27,18 @@ public class BudgetService {
                 overlappingStart = start;
                 overlappingEnd = budgetYearMonth.atEndOfMonth();
             } else if (budgetYearMonth.equals(YearMonth.from(end))) {
-                overlappingStart = budgetYearMonth.atDay(1);
+                overlappingStart = firstDay(budgetYearMonth);
                 overlappingEnd = end;
             } else {
-                overlappingStart = budgetYearMonth.atDay(1);
+                overlappingStart = firstDay(budgetYearMonth);
                 overlappingEnd = budgetYearMonth.atEndOfMonth();
             }
         }
         return new BigDecimal(DAYS.between(overlappingStart, overlappingEnd) + 1);
+    }
+
+    private static LocalDate firstDay(YearMonth budgetYearMonth) {
+        return budgetYearMonth.atDay(1);
     }
 
     public BigDecimal totalAmount(LocalDate start, LocalDate end) {
