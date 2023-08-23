@@ -40,16 +40,16 @@ public class BudgetService {
                 overlappingEnd = end;
 //                days = new BigDecimal(DAYS.between(overlappingStart, overlappingEnd) + 1);
             } else if (yearMonth.equals(startYearMonth)) {
-                LocalDate overlappingStart = start;
-                LocalDate overlappingEnd = yearMonth.atEndOfMonth();
+                overlappingStart = start;
+                overlappingEnd = yearMonth.atEndOfMonth();
 //                days = new BigDecimal(DAYS.between(overlappingStart, overlappingEnd) + 1);
             } else if (yearMonth.equals(endYearMonth)) {
-                LocalDate overlappingStart = yearMonth.atDay(1);
-                LocalDate overlappingEnd = end;
+                overlappingStart = yearMonth.atDay(1);
+                overlappingEnd = end;
 //                days = new BigDecimal(DAYS.between(overlappingStart, overlappingEnd) + 1);
             } else {
-                LocalDate overlappingStart = yearMonth.atDay(1);
-                LocalDate overlappingEnd = yearMonth.atEndOfMonth();
+                overlappingStart = yearMonth.atDay(1);
+                overlappingEnd = yearMonth.atEndOfMonth();
 //                days = new BigDecimal(DAYS.between(overlappingStart, overlappingEnd) + 1);
             }
             days = new BigDecimal(DAYS.between(overlappingStart, overlappingEnd) + 1);
