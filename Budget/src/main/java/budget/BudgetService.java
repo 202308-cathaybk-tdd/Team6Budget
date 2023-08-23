@@ -27,9 +27,6 @@ public class BudgetService {
         return budgetList.stream().filter(budget -> {
             YearMonth yearMonth = YearMonth.parse(budget.getYearMonth(), DateTimeFormatter.ofPattern("yyyyMM"));
             return yearMonth.compareTo(startYearMonth) >= 0 && yearMonth.compareTo(endYearMonth) <= 0;
-        }).map(budget -> {
-
-            return budget.overlappingAmount(new Period(start, end));
-        }).reduce(BigDecimal.ZERO, BigDecimal::add);
+        }).map(budget -> budget.overlappingAmount(new Period(start, end))).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }
