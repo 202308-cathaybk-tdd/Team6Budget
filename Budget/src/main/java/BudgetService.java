@@ -42,7 +42,9 @@ public class BudgetService {
                 days = new BigDecimal(end.getDayOfMonth());
                 return dailyAmount.multiply(days);
             } else {
-                return budget.getAmount();
+                days = new BigDecimal(yearMonth.lengthOfMonth());
+                return dailyAmount.multiply(days);
+//                return budget.getAmount();
             }
         }).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
