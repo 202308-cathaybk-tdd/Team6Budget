@@ -1,4 +1,4 @@
-import budget.Period;
+package budget;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -7,24 +7,12 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import static java.time.temporal.ChronoUnit.DAYS;
-
 public class BudgetService {
 
     private final BudgetRepo budgetRepo;
 
     public BudgetService(BudgetRepo budgetRepo) {
         this.budgetRepo = budgetRepo;
-    }
-
-    private static BigDecimal overlappingDays(Period period, Budget budget) {
-        LocalDate overlappingStart = period.start().isAfter(budget.firstDay())
-                ? period.start()
-                : budget.firstDay();
-        LocalDate overlappingEnd = period.end().isBefore(budget.lastDay())
-                ? period.end()
-                : budget.lastDay();
-        return new BigDecimal(DAYS.between(overlappingStart, overlappingEnd) + 1);
     }
 
     public BigDecimal totalAmount(LocalDate start, LocalDate end) {
@@ -42,7 +30,7 @@ public class BudgetService {
             return yearMonth.compareTo(startYearMonth) >= 0 && yearMonth.compareTo(endYearMonth) <= 0;
         }).map(budget -> {
 
-            BigDecimal days = overlappingDays(new Period(start, end), budget);
+            BigDecimal days = new Period(start, end).overlappingDays(budget);
             BigDecimal dailyAmount = budget.getAmount().divide(new BigDecimal(budget.getYearMonthInstance().lengthOfMonth()), 0, RoundingMode.HALF_UP);
             return dailyAmount.multiply(days);
         }).reduce(BigDecimal.ZERO, BigDecimal::add);
