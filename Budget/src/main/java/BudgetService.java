@@ -34,7 +34,7 @@ public class BudgetService {
             }
 
             int dayOfMonth = yearMonth.atEndOfMonth().getDayOfMonth();
-            BigDecimal dailyAmount = budget.getAmount().divide(new BigDecimal(dayOfMonth), 2, RoundingMode.HALF_UP);
+            BigDecimal dailyAmount = budget.getAmount().divide(new BigDecimal(dayOfMonth), 0, RoundingMode.HALF_UP);
 
             if (yearMonth.equals(startYearMonth)) {
                 BigDecimal days;
