@@ -42,7 +42,9 @@ public class BudgetService {
                 LocalDate overlappingEnd = yearMonth.atEndOfMonth();
                 days = new BigDecimal(DAYS.between(overlappingStart, overlappingEnd) + 1);
             } else if (yearMonth.equals(endYearMonth)) {
-                days = new BigDecimal(DAYS.between(yearMonth.atDay(1), end) + 1);
+                LocalDate overlappingStart = yearMonth.atDay(1);
+                LocalDate overlappingEnd = end;
+                days = new BigDecimal(DAYS.between(overlappingStart, overlappingEnd) + 1);
             } else {
                 days = new BigDecimal(DAYS.between(yearMonth.atDay(1), yearMonth.atEndOfMonth()) + 1);
             }
