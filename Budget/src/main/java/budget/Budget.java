@@ -16,41 +16,33 @@ public class Budget {
         this.amount = amount;
     }
 
-    public String getYearMonth() {
-        return yearMonth;
-    }
-
-    public void setYearMonth(String yearMonth) {
-        this.yearMonth = yearMonth;
-    }
-
-    public BigDecimal getAmount() {
-        return amount;
-    }
-
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
-    }
-
-    BigDecimal overlappingAmount(Period period) {
+    public BigDecimal overlappingAmount(Period period) {
         long days = period.overlappingDays(new Period(firstDay(), lastDay()));
         return getDailyAmount().multiply(BigDecimal.valueOf(days));
     }
 
-    BigDecimal getDailyAmount() {
+    private String getYearMonth() {
+        return yearMonth;
+    }
+
+    private BigDecimal getAmount() {
+        return amount;
+    }
+
+    private BigDecimal getDailyAmount() {
         return getAmount().divide(new BigDecimal(getYearMonthInstance().lengthOfMonth()), 0, RoundingMode.HALF_UP);
     }
 
-    LocalDate lastDay() {
+    private LocalDate lastDay() {
         return getYearMonthInstance().atEndOfMonth();
     }
 
-    LocalDate firstDay() {
+    private LocalDate firstDay() {
         YearMonth budgetYearMonth = getYearMonthInstance();
         return budgetYearMonth.atDay(1);
     }
 
-    YearMonth getYearMonthInstance() {
+    private YearMonth getYearMonthInstance() {
         return YearMonth.parse(getYearMonth(), DateTimeFormatter.ofPattern("yyyyMM"));
     }
 }
