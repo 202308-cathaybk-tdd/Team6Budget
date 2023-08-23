@@ -34,18 +34,18 @@ public class BudgetService {
             BigDecimal days;
             if (startYearMonth.equals(endYearMonth)) {
                 days = new BigDecimal(end.getDayOfMonth() - start.getDayOfMonth() + 1);
-                return dailyAmount.multiply(days);
+//                return dailyAmount.multiply(days);
             } else if (yearMonth.equals(startYearMonth)) {
                 days = new BigDecimal(dayOfMonth - start.getDayOfMonth() + 1);
-                return dailyAmount.multiply(days);
+//                return dailyAmount.multiply(days);
             } else if (yearMonth.equals(endYearMonth)) {
                 days = new BigDecimal(end.getDayOfMonth());
-                return dailyAmount.multiply(days);
+//                return dailyAmount.multiply(days);
             } else {
                 days = new BigDecimal(yearMonth.lengthOfMonth());
-                return dailyAmount.multiply(days);
-//                return budget.getAmount();
+//                return dailyAmount.multiply(days);
             }
+            return dailyAmount.multiply(days);
         }).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }
