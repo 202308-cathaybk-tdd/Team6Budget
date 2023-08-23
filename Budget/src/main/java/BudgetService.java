@@ -44,17 +44,17 @@ public class BudgetService {
                 return dailyAmount.multiply(days);
             } else if (yearMonth.equals(endYearMonth)) {
 
-                if (yearMonth.equals(startYearMonth)) {
-                    BigDecimal days;
-
-                    if (startYearMonth.equals(endYearMonth)) {
-                        days = new BigDecimal(end.getDayOfMonth() - start.getDayOfMonth() + 1);
-                    } else {
-                        days = new BigDecimal(dayOfMonth - start.getDayOfMonth() + 1);
-                    }
-
-                    return dailyAmount.multiply(days);
-                }
+//                if (yearMonth.equals(startYearMonth)) {
+//                    BigDecimal days;
+//
+//                    if (startYearMonth.equals(endYearMonth)) {
+//                        days = new BigDecimal(end.getDayOfMonth() - start.getDayOfMonth() + 1);
+//                    } else {
+//                        days = new BigDecimal(dayOfMonth - start.getDayOfMonth() + 1);
+//                    }
+//
+//                    return dailyAmount.multiply(days);
+//                }
 
                 return dailyAmount.multiply(new BigDecimal(end.getDayOfMonth()));
             } else {
