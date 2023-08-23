@@ -33,8 +33,7 @@ public class BudgetService {
             overlappingStart = budget.getYearMonthInstance().atDay(1);
             overlappingEnd = budget.getYearMonthInstance().atEndOfMonth();
         }
-        BigDecimal days = new BigDecimal(DAYS.between(overlappingStart, overlappingEnd) + 1);
-        return days;
+        return new BigDecimal(DAYS.between(overlappingStart, overlappingEnd) + 1);
     }
 
     public BigDecimal totalAmount(LocalDate start, LocalDate end) {
