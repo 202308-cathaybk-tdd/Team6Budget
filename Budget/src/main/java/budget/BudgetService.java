@@ -20,15 +20,8 @@ public class BudgetService {
             return BigDecimal.ZERO;
         }
 
-        List<Budget> budgetList = budgetRepo.getAll();
-
-        YearMonth startYearMonth = YearMonth.from(start);
-        YearMonth endYearMonth = YearMonth.from(end);
-
-//        Stream<Budget> budgets = budgetList.stream().filter(budget -> {
-//            YearMonth yearMonth = YearMonth.parse(budget.getYearMonth(), DateTimeFormatter.ofPattern("yyyyMM"));
-//            return yearMonth.compareTo(startYearMonth) >= 0 && yearMonth.compareTo(endYearMonth) <= 0;
-//        });
-        return budgetList.stream().map(budget -> budget.overlappingAmount(new Period(start, end))).reduce(BigDecimal.ZERO, BigDecimal::add);
+        return budgetRepo.getAll().stream()
+                .map(budget -> budget.overlappingAmount(new Period(start, end)))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }
