@@ -21,19 +21,21 @@ public class BudgetService {
         LocalDate overlappingStart = period.start().isAfter(budget.firstDay())
                 ? period.start()
                 : budget.firstDay();
-        LocalDate overlappingEnd;
+        LocalDate overlappingEnd = period.end().isBefore(budget.lastDay())
+                ? period.end()
+                : budget.lastDay();
         if (YearMonth.from(period.start()).equals(YearMonth.from(period.end()))) {
 //            overlappingStart = period.start();
-            overlappingEnd = period.end();
+//            overlappingEnd = period.end();
         } else if (budget.getYearMonthInstance().equals(YearMonth.from(period.start()))) {
 //            overlappingStart = period.start();
-            overlappingEnd = budget.lastDay();
+//            overlappingEnd = budget.lastDay();
         } else if (budget.getYearMonthInstance().equals(YearMonth.from(period.end()))) {
 //            overlappingStart = budget.firstDay();
-            overlappingEnd = period.end();
+//            overlappingEnd = period.end();
         } else {
 //            overlappingStart = budget.firstDay();
-            overlappingEnd = budget.lastDay();
+//            overlappingEnd = budget.lastDay();
         }
         return new BigDecimal(DAYS.between(overlappingStart, overlappingEnd) + 1);
     }
