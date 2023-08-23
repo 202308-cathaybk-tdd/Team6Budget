@@ -15,6 +15,26 @@ public class BudgetService {
         this.budgetRepo = budgetRepo;
     }
 
+    private static BigDecimal overlappingDays(LocalDate start, LocalDate end, YearMonth startYearMonth, YearMonth endYearMonth, Budget budget) {
+        LocalDate overlappingStart;
+        LocalDate overlappingEnd;
+        if (startYearMonth.equals(endYearMonth)) {
+            overlappingStart = start;
+            overlappingEnd = end;
+        } else if (budget.getYearMonthInstance().equals(startYearMonth)) {
+            overlappingStart = start;
+            overlappingEnd = budget.getYearMonthInstance().atEndOfMonth();
+        } else if (budget.getYearMonthInstance().equals(endYearMonth)) {
+            overlappingStart = budget.getYearMonthInstance().atDay(1);
+            overlappingEnd = end;
+        } else {
+            overlappingStart = budget.getYearMonthInstance().atDay(1);
+            overlappingEnd = budget.getYearMonthInstance().atEndOfMonth();
+        }
+        BigDecimal days = new BigDecimal(DAYS.between(overlappingStart, overlappingEnd) + 1);
+        return days;
+    }
+
     public BigDecimal totalAmount(LocalDate start, LocalDate end) {
         if (start.isAfter(end)) {
             return BigDecimal.ZERO;
@@ -30,22 +50,7 @@ public class BudgetService {
             return yearMonth.compareTo(startYearMonth) >= 0 && yearMonth.compareTo(endYearMonth) <= 0;
         }).map(budget -> {
 
-            LocalDate overlappingStart;
-            LocalDate overlappingEnd;
-            if (startYearMonth.equals(endYearMonth)) {
-                overlappingStart = start;
-                overlappingEnd = end;
-            } else if (budget.getYearMonthInstance().equals(startYearMonth)) {
-                overlappingStart = start;
-                overlappingEnd = budget.getYearMonthInstance().atEndOfMonth();
-            } else if (budget.getYearMonthInstance().equals(endYearMonth)) {
-                overlappingStart = budget.getYearMonthInstance().atDay(1);
-                overlappingEnd = end;
-            } else {
-                overlappingStart = budget.getYearMonthInstance().atDay(1);
-                overlappingEnd = budget.getYearMonthInstance().atEndOfMonth();
-            }
-            BigDecimal days = new BigDecimal(DAYS.between(overlappingStart, overlappingEnd) + 1);
+            BigDecimal days = overlappingDays(start, end, startYearMonth, endYearMonth, budget);
             BigDecimal dailyAmount = budget.getAmount().divide(new BigDecimal(budget.getYearMonthInstance().lengthOfMonth()), 0, RoundingMode.HALF_UP);
             return dailyAmount.multiply(days);
         }).reduce(BigDecimal.ZERO, BigDecimal::add);
