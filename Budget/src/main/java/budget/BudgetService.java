@@ -16,8 +16,7 @@ public class BudgetService {
     }
 
     private static BigDecimal getDailyAmount(Budget budget) {
-        BigDecimal dailyAmount = budget.getAmount().divide(new BigDecimal(budget.getYearMonthInstance().lengthOfMonth()), 0, RoundingMode.HALF_UP);
-        return dailyAmount;
+        return budget.getAmount().divide(new BigDecimal(budget.getYearMonthInstance().lengthOfMonth()), 0, RoundingMode.HALF_UP);
     }
 
     public BigDecimal totalAmount(LocalDate start, LocalDate end) {
