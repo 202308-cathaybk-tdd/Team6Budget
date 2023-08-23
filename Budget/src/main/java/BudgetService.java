@@ -30,21 +30,17 @@ public class BudgetService {
             YearMonth yearMonth = YearMonth.parse(budget.getYearMonth(), DateTimeFormatter.ofPattern("yyyyMM"));
 
             int dayOfMonth = yearMonth.lengthOfMonth();
-            BigDecimal dailyAmount = budget.getAmount().divide(new BigDecimal(dayOfMonth), 0, RoundingMode.HALF_UP);
             BigDecimal days;
             if (startYearMonth.equals(endYearMonth)) {
                 days = new BigDecimal(end.getDayOfMonth() - start.getDayOfMonth() + 1);
-//                return dailyAmount.multiply(days);
             } else if (yearMonth.equals(startYearMonth)) {
                 days = new BigDecimal(dayOfMonth - start.getDayOfMonth() + 1);
-//                return dailyAmount.multiply(days);
             } else if (yearMonth.equals(endYearMonth)) {
                 days = new BigDecimal(end.getDayOfMonth());
-//                return dailyAmount.multiply(days);
             } else {
                 days = new BigDecimal(yearMonth.lengthOfMonth());
-//                return dailyAmount.multiply(days);
             }
+            BigDecimal dailyAmount = budget.getAmount().divide(new BigDecimal(dayOfMonth), 0, RoundingMode.HALF_UP);
             return dailyAmount.multiply(days);
         }).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
