@@ -22,11 +22,10 @@ public class BudgetService {
             overlappingStart = start;
             overlappingEnd = end;
         } else {
-            YearMonth budgetYearMonth = budget.getYearMonthInstance();
-            if (budgetYearMonth.equals(YearMonth.from(start))) {
+            if (budget.getYearMonthInstance().equals(YearMonth.from(start))) {
                 overlappingStart = start;
                 overlappingEnd = budget.lastDay();
-            } else if (budgetYearMonth.equals(YearMonth.from(end))) {
+            } else if (budget.getYearMonthInstance().equals(YearMonth.from(end))) {
                 overlappingStart = budget.firstDay();
                 overlappingEnd = end;
             } else {
