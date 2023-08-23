@@ -29,27 +29,26 @@ public class BudgetService {
         }).map(budget -> {
             YearMonth yearMonth = YearMonth.parse(budget.getYearMonth(), DateTimeFormatter.ofPattern("yyyyMM"));
 
-            if (!yearMonth.equals(startYearMonth) && !yearMonth.equals(endYearMonth)) {
-                return budget.getAmount();
-            }
+            if (yearMonth.equals(startYearMonth) || yearMonth.equals(endYearMonth)) {
+                int dayOfMonth = yearMonth.lengthOfMonth();
+                BigDecimal dailyAmount = budget.getAmount().divide(new BigDecimal(dayOfMonth), 0, RoundingMode.HALF_UP);
 
-            int dayOfMonth = yearMonth.lengthOfMonth();
-//            int dayOfMonth = yearMonth.atEndOfMonth().getDayOfMonth();
-            BigDecimal dailyAmount = budget.getAmount().divide(new BigDecimal(dayOfMonth), 0, RoundingMode.HALF_UP);
+                if (yearMonth.equals(startYearMonth)) {
+                    BigDecimal days;
 
-            if (yearMonth.equals(startYearMonth)) {
-                BigDecimal days;
+                    if (startYearMonth.equals(endYearMonth)) {
+                        days = new BigDecimal(end.getDayOfMonth() - start.getDayOfMonth() + 1);
+                    } else {
+                        days = new BigDecimal(dayOfMonth - start.getDayOfMonth() + 1);
+                    }
 
-                if (startYearMonth.equals(endYearMonth)) {
-                    days = new BigDecimal(end.getDayOfMonth() - start.getDayOfMonth() + 1);
-                } else {
-                    days = new BigDecimal(dayOfMonth - start.getDayOfMonth() + 1);
+                    return dailyAmount.multiply(days);
                 }
 
-                return dailyAmount.multiply(days);
+                return dailyAmount.multiply(new BigDecimal(end.getDayOfMonth()));
+            } else {
+                return budget.getAmount();
             }
-
-            return dailyAmount.multiply(new BigDecimal(end.getDayOfMonth()));
         }).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }
