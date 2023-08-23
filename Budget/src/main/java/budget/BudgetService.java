@@ -30,8 +30,7 @@ public class BudgetService {
         }).map(budget -> {
 
             long days = new Period(start, end).overlappingDays(new Period(budget.firstDay(), budget.lastDay()));
-            BigDecimal dailyAmount = budget.getDailyAmount();
-            return dailyAmount.multiply(BigDecimal.valueOf(days));
+            return budget.getDailyAmount().multiply(BigDecimal.valueOf(days));
         }).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }
