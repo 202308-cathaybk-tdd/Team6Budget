@@ -13,10 +13,6 @@ public class BudgetService {
         this.budgetRepo = budgetRepo;
     }
 
-    private static YearMonth getYearMonthInstance(Budget budget) {
-        return YearMonth.parse(budget.getYearMonth(), DateTimeFormatter.ofPattern("yyyyMM"));
-    }
-
     public BigDecimal totalAmount(LocalDate start, LocalDate end) {
         if (start.isAfter(end)) {
             return BigDecimal.ZERO;
@@ -31,7 +27,7 @@ public class BudgetService {
             YearMonth yearMonth = YearMonth.parse(budget.getYearMonth(), DateTimeFormatter.ofPattern("yyyyMM"));
             return yearMonth.compareTo(startYearMonth) >= 0 && yearMonth.compareTo(endYearMonth) <= 0;
         }).map(budget -> {
-            YearMonth yearMonth = getYearMonthInstance(budget);
+            YearMonth yearMonth = budget.getYearMonthInstance();
 
             int dayOfMonth = yearMonth.lengthOfMonth();
             BigDecimal days;
