@@ -21,15 +21,18 @@ public class BudgetService {
         if (YearMonth.from(start).equals(YearMonth.from(end))) {
             overlappingStart = start;
             overlappingEnd = end;
-        } else if (budget.getYearMonthInstance().equals(YearMonth.from(start))) {
-            overlappingStart = start;
-            overlappingEnd = budget.getYearMonthInstance().atEndOfMonth();
-        } else if (budget.getYearMonthInstance().equals(YearMonth.from(end))) {
-            overlappingStart = budget.getYearMonthInstance().atDay(1);
-            overlappingEnd = end;
         } else {
-            overlappingStart = budget.getYearMonthInstance().atDay(1);
-            overlappingEnd = budget.getYearMonthInstance().atEndOfMonth();
+            YearMonth budgetYearMonth = budget.getYearMonthInstance();
+            if (budgetYearMonth.equals(YearMonth.from(start))) {
+                overlappingStart = start;
+                overlappingEnd = budgetYearMonth.atEndOfMonth();
+            } else if (budgetYearMonth.equals(YearMonth.from(end))) {
+                overlappingStart = budgetYearMonth.atDay(1);
+                overlappingEnd = end;
+            } else {
+                overlappingStart = budgetYearMonth.atDay(1);
+                overlappingEnd = budgetYearMonth.atEndOfMonth();
+            }
         }
         return new BigDecimal(DAYS.between(overlappingStart, overlappingEnd) + 1);
     }
