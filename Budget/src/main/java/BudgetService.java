@@ -38,19 +38,15 @@ public class BudgetService {
             if (startYearMonth.equals(endYearMonth)) {
                 overlappingStart = start;
                 overlappingEnd = end;
-//                days = new BigDecimal(DAYS.between(overlappingStart, overlappingEnd) + 1);
             } else if (yearMonth.equals(startYearMonth)) {
                 overlappingStart = start;
                 overlappingEnd = yearMonth.atEndOfMonth();
-//                days = new BigDecimal(DAYS.between(overlappingStart, overlappingEnd) + 1);
             } else if (yearMonth.equals(endYearMonth)) {
                 overlappingStart = yearMonth.atDay(1);
                 overlappingEnd = end;
-//                days = new BigDecimal(DAYS.between(overlappingStart, overlappingEnd) + 1);
             } else {
                 overlappingStart = yearMonth.atDay(1);
                 overlappingEnd = yearMonth.atEndOfMonth();
-//                days = new BigDecimal(DAYS.between(overlappingStart, overlappingEnd) + 1);
             }
             days = new BigDecimal(DAYS.between(overlappingStart, overlappingEnd) + 1);
             BigDecimal dailyAmount = budget.getAmount().divide(new BigDecimal(dayOfMonth), 0, RoundingMode.HALF_UP);
