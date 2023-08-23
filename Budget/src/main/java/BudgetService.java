@@ -5,6 +5,8 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import static java.time.temporal.ChronoUnit.DAYS;
+
 public class BudgetService {
 
     private final BudgetRepo budgetRepo;
@@ -32,7 +34,8 @@ public class BudgetService {
             int dayOfMonth = yearMonth.lengthOfMonth();
             BigDecimal days;
             if (startYearMonth.equals(endYearMonth)) {
-                days = new BigDecimal(end.getDayOfMonth() - start.getDayOfMonth() + 1);
+                days = new BigDecimal(DAYS.between(start, end) + 1);
+//                days = new BigDecimal(end.getDayOfMonth() - start.getDayOfMonth() + 1);
             } else if (yearMonth.equals(startYearMonth)) {
                 days = new BigDecimal(dayOfMonth - start.getDayOfMonth() + 1);
             } else if (yearMonth.equals(endYearMonth)) {
