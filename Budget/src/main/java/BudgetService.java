@@ -39,9 +39,9 @@ public class BudgetService {
                 days = new BigDecimal(DAYS.between(start, yearMonth.atEndOfMonth()) + 1);
             } else if (yearMonth.equals(endYearMonth)) {
                 days = new BigDecimal(DAYS.between(yearMonth.atDay(1), end) + 1);
-//                days = new BigDecimal(end.getDayOfMonth());
             } else {
-                days = new BigDecimal(yearMonth.lengthOfMonth());
+                days = new BigDecimal(DAYS.between(yearMonth.atDay(1), yearMonth.atEndOfMonth()) + 1);
+//                days = new BigDecimal(yearMonth.lengthOfMonth());
             }
             BigDecimal dailyAmount = budget.getAmount().divide(new BigDecimal(dayOfMonth), 0, RoundingMode.HALF_UP);
             return dailyAmount.multiply(days);
