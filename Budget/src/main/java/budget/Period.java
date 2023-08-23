@@ -6,12 +6,14 @@ import static java.time.temporal.ChronoUnit.DAYS;
 
 public record Period(LocalDate start, LocalDate end) {
     public long overlappingDays(Budget budget) {
-        LocalDate overlappingStart = start().isAfter(budget.firstDay())
+        LocalDate firstDay = budget.firstDay();
+        LocalDate lastDay = budget.lastDay();
+        LocalDate overlappingStart = start().isAfter(firstDay)
                 ? start()
-                : budget.firstDay();
-        LocalDate overlappingEnd = end().isBefore(budget.lastDay())
+                : firstDay;
+        LocalDate overlappingEnd = end().isBefore(lastDay)
                 ? end()
-                : budget.lastDay();
+                : lastDay;
         return DAYS.between(overlappingStart, overlappingEnd) + 1;
     }
 }
