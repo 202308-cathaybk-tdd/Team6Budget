@@ -1,3 +1,5 @@
+import budget.Period;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
@@ -15,18 +17,18 @@ public class BudgetService {
         this.budgetRepo = budgetRepo;
     }
 
-    private static BigDecimal overlappingDays(LocalDate start, LocalDate end, Budget budget) {
+    private static BigDecimal overlappingDays(Period period, Budget budget) {
         LocalDate overlappingStart;
         LocalDate overlappingEnd;
-        if (YearMonth.from(start).equals(YearMonth.from(end))) {
-            overlappingStart = start;
-            overlappingEnd = end;
-        } else if (budget.getYearMonthInstance().equals(YearMonth.from(start))) {
-            overlappingStart = start;
+        if (YearMonth.from(period.start()).equals(YearMonth.from(period.end()))) {
+            overlappingStart = period.start();
+            overlappingEnd = period.end();
+        } else if (budget.getYearMonthInstance().equals(YearMonth.from(period.start()))) {
+            overlappingStart = period.start();
             overlappingEnd = budget.lastDay();
-        } else if (budget.getYearMonthInstance().equals(YearMonth.from(end))) {
+        } else if (budget.getYearMonthInstance().equals(YearMonth.from(period.end()))) {
             overlappingStart = budget.firstDay();
-            overlappingEnd = end;
+            overlappingEnd = period.end();
         } else {
             overlappingStart = budget.firstDay();
             overlappingEnd = budget.lastDay();
@@ -49,7 +51,7 @@ public class BudgetService {
             return yearMonth.compareTo(startYearMonth) >= 0 && yearMonth.compareTo(endYearMonth) <= 0;
         }).map(budget -> {
 
-            BigDecimal days = overlappingDays(start, end, budget);
+            BigDecimal days = overlappingDays(new Period(start, end), budget);
             BigDecimal dailyAmount = budget.getAmount().divide(new BigDecimal(budget.getYearMonthInstance().lengthOfMonth()), 0, RoundingMode.HALF_UP);
             return dailyAmount.multiply(days);
         }).reduce(BigDecimal.ZERO, BigDecimal::add);
