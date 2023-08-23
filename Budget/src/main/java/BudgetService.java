@@ -47,8 +47,7 @@ public class BudgetService {
                 overlappingEnd = yearMonth.atEndOfMonth();
             }
             BigDecimal days = new BigDecimal(DAYS.between(overlappingStart, overlappingEnd) + 1);
-            int dayOfMonth = yearMonth.lengthOfMonth();
-            BigDecimal dailyAmount = budget.getAmount().divide(new BigDecimal(dayOfMonth), 0, RoundingMode.HALF_UP);
+            BigDecimal dailyAmount = budget.getAmount().divide(new BigDecimal(yearMonth.lengthOfMonth()), 0, RoundingMode.HALF_UP);
             return dailyAmount.multiply(days);
         }).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
