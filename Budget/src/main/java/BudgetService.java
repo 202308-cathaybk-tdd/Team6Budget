@@ -29,25 +29,24 @@ public class BudgetService {
             YearMonth yearMonth = YearMonth.parse(budget.getYearMonth(), DateTimeFormatter.ofPattern("yyyyMM"));
             return yearMonth.compareTo(startYearMonth) >= 0 && yearMonth.compareTo(endYearMonth) <= 0;
         }).map(budget -> {
-            YearMonth yearMonth = budget.getYearMonthInstance();
 
             LocalDate overlappingStart;
             LocalDate overlappingEnd;
             if (startYearMonth.equals(endYearMonth)) {
                 overlappingStart = start;
                 overlappingEnd = end;
-            } else if (yearMonth.equals(startYearMonth)) {
+            } else if (budget.getYearMonthInstance().equals(startYearMonth)) {
                 overlappingStart = start;
-                overlappingEnd = yearMonth.atEndOfMonth();
-            } else if (yearMonth.equals(endYearMonth)) {
-                overlappingStart = yearMonth.atDay(1);
+                overlappingEnd = budget.getYearMonthInstance().atEndOfMonth();
+            } else if (budget.getYearMonthInstance().equals(endYearMonth)) {
+                overlappingStart = budget.getYearMonthInstance().atDay(1);
                 overlappingEnd = end;
             } else {
-                overlappingStart = yearMonth.atDay(1);
-                overlappingEnd = yearMonth.atEndOfMonth();
+                overlappingStart = budget.getYearMonthInstance().atDay(1);
+                overlappingEnd = budget.getYearMonthInstance().atEndOfMonth();
             }
             BigDecimal days = new BigDecimal(DAYS.between(overlappingStart, overlappingEnd) + 1);
-            BigDecimal dailyAmount = budget.getAmount().divide(new BigDecimal(yearMonth.lengthOfMonth()), 0, RoundingMode.HALF_UP);
+            BigDecimal dailyAmount = budget.getAmount().divide(new BigDecimal(budget.getYearMonthInstance().lengthOfMonth()), 0, RoundingMode.HALF_UP);
             return dailyAmount.multiply(days);
         }).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
