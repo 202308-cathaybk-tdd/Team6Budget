@@ -9,11 +9,11 @@ public record Period(LocalDate start, LocalDate end) {
         if (start.isAfter(another.end) || end.isBefore(another.start)) {
             return 0;
         }
-        LocalDate overlappingStart = start().isAfter(another.start)
-                ? start()
+        LocalDate overlappingStart = start.isAfter(another.start)
+                ? start
                 : another.start;
-        LocalDate overlappingEnd = end().isBefore(another.end)
-                ? end()
+        LocalDate overlappingEnd = end.isBefore(another.end)
+                ? end
                 : another.end;
         return DAYS.between(overlappingStart, overlappingEnd) + 1;
     }
