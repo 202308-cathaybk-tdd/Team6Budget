@@ -14,8 +14,8 @@ public class BudgetService {
         this.budgetRepo = budgetRepo;
     }
 
-    private static BigDecimal overlappingAmount(LocalDate start, LocalDate end, Budget budget) {
-        long days = new Period(start, end).overlappingDays(new Period(budget.firstDay(), budget.lastDay()));
+    private static BigDecimal overlappingAmount(Budget budget, Period period) {
+        long days = period.overlappingDays(new Period(budget.firstDay(), budget.lastDay()));
         return budget.getDailyAmount().multiply(BigDecimal.valueOf(days));
     }
 
@@ -34,7 +34,7 @@ public class BudgetService {
             return yearMonth.compareTo(startYearMonth) >= 0 && yearMonth.compareTo(endYearMonth) <= 0;
         }).map(budget -> {
 
-            return overlappingAmount(start, end, budget);
+            return overlappingAmount(budget, new Period(start, end));
         }).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }
