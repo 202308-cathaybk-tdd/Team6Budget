@@ -36,20 +36,21 @@ public class BudgetService {
             if (startYearMonth.equals(endYearMonth)) {
                 LocalDate overlappingStart = start;
                 LocalDate overlappingEnd = end;
-                days = new BigDecimal(DAYS.between(overlappingStart, overlappingEnd) + 1);
+//                days = new BigDecimal(DAYS.between(overlappingStart, overlappingEnd) + 1);
             } else if (yearMonth.equals(startYearMonth)) {
                 LocalDate overlappingStart = start;
                 LocalDate overlappingEnd = yearMonth.atEndOfMonth();
-                days = new BigDecimal(DAYS.between(overlappingStart, overlappingEnd) + 1);
+//                days = new BigDecimal(DAYS.between(overlappingStart, overlappingEnd) + 1);
             } else if (yearMonth.equals(endYearMonth)) {
                 LocalDate overlappingStart = yearMonth.atDay(1);
                 LocalDate overlappingEnd = end;
-                days = new BigDecimal(DAYS.between(overlappingStart, overlappingEnd) + 1);
+//                days = new BigDecimal(DAYS.between(overlappingStart, overlappingEnd) + 1);
             } else {
                 LocalDate overlappingStart = yearMonth.atDay(1);
                 LocalDate overlappingEnd = yearMonth.atEndOfMonth();
-                days = new BigDecimal(DAYS.between(overlappingStart, overlappingEnd) + 1);
+//                days = new BigDecimal(DAYS.between(overlappingStart, overlappingEnd) + 1);
             }
+            days = new BigDecimal(DAYS.between(overlappingStart, overlappingEnd) + 1);
             BigDecimal dailyAmount = budget.getAmount().divide(new BigDecimal(dayOfMonth), 0, RoundingMode.HALF_UP);
             return dailyAmount.multiply(days);
         }).reduce(BigDecimal.ZERO, BigDecimal::add);
