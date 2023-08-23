@@ -29,9 +29,9 @@ public class BudgetService {
         }).map(budget -> {
             YearMonth yearMonth = YearMonth.parse(budget.getYearMonth(), DateTimeFormatter.ofPattern("yyyyMM"));
 
+            int dayOfMonth = yearMonth.lengthOfMonth();
+            BigDecimal dailyAmount = budget.getAmount().divide(new BigDecimal(dayOfMonth), 0, RoundingMode.HALF_UP);
             if (yearMonth.equals(startYearMonth)) {
-                int dayOfMonth = yearMonth.lengthOfMonth();
-                BigDecimal dailyAmount = budget.getAmount().divide(new BigDecimal(dayOfMonth), 0, RoundingMode.HALF_UP);
 
                 if (yearMonth.equals(startYearMonth)) {
                     BigDecimal days;
@@ -47,8 +47,6 @@ public class BudgetService {
 
                 return dailyAmount.multiply(new BigDecimal(end.getDayOfMonth()));
             } else if (yearMonth.equals(endYearMonth)) {
-                int dayOfMonth = yearMonth.lengthOfMonth();
-                BigDecimal dailyAmount = budget.getAmount().divide(new BigDecimal(dayOfMonth), 0, RoundingMode.HALF_UP);
 
                 if (yearMonth.equals(startYearMonth)) {
                     BigDecimal days;
