@@ -16,17 +16,15 @@ public class BudgetService {
     }
 
     private static BigDecimal overlappingDays(LocalDate start, LocalDate end, Budget budget) {
-        YearMonth endYearMonth = YearMonth.from(end);
-        YearMonth startYearMonth = YearMonth.from(start);
         LocalDate overlappingStart;
         LocalDate overlappingEnd;
-        if (startYearMonth.equals(endYearMonth)) {
+        if (YearMonth.from(start).equals(YearMonth.from(end))) {
             overlappingStart = start;
             overlappingEnd = end;
-        } else if (budget.getYearMonthInstance().equals(startYearMonth)) {
+        } else if (budget.getYearMonthInstance().equals(YearMonth.from(start))) {
             overlappingStart = start;
             overlappingEnd = budget.getYearMonthInstance().atEndOfMonth();
-        } else if (budget.getYearMonthInstance().equals(endYearMonth)) {
+        } else if (budget.getYearMonthInstance().equals(YearMonth.from(end))) {
             overlappingStart = budget.getYearMonthInstance().atDay(1);
             overlappingEnd = end;
         } else {
