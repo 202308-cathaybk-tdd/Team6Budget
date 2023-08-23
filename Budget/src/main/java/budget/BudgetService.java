@@ -30,7 +30,7 @@ public class BudgetService {
             return yearMonth.compareTo(startYearMonth) >= 0 && yearMonth.compareTo(endYearMonth) <= 0;
         }).map(budget -> {
 
-            long days = new Period(start, end).overlappingDays(budget);
+            long days = new Period(start, end).overlappingDays(new Period(budget.firstDay(), budget.lastDay()));
             BigDecimal dailyAmount = budget.getAmount().divide(new BigDecimal(budget.getYearMonthInstance().lengthOfMonth()), 0, RoundingMode.HALF_UP);
             return dailyAmount.multiply(BigDecimal.valueOf(days));
         }).reduce(BigDecimal.ZERO, BigDecimal::add);
