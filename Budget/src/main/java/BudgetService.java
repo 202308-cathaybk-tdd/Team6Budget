@@ -39,7 +39,8 @@ public class BudgetService {
                 days = new BigDecimal(dayOfMonth - start.getDayOfMonth() + 1);
                 return dailyAmount.multiply(days);
             } else if (yearMonth.equals(endYearMonth)) {
-                return dailyAmount.multiply(new BigDecimal(end.getDayOfMonth()));
+                days = new BigDecimal(end.getDayOfMonth());
+                return dailyAmount.multiply(days);
             } else {
                 return budget.getAmount();
             }
