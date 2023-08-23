@@ -32,6 +32,11 @@ public class Budget {
         this.amount = amount;
     }
 
+    BigDecimal overlappingAmount(Period period) {
+        long days = period.overlappingDays(new Period(firstDay(), lastDay()));
+        return getDailyAmount().multiply(BigDecimal.valueOf(days));
+    }
+
     BigDecimal getDailyAmount() {
         return getAmount().divide(new BigDecimal(getYearMonthInstance().lengthOfMonth()), 0, RoundingMode.HALF_UP);
     }
