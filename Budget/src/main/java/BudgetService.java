@@ -14,8 +14,7 @@ public class BudgetService {
     }
 
     private static YearMonth getYearMonthInstance(Budget budget) {
-        YearMonth yearMonth = YearMonth.parse(budget.getYearMonth(), DateTimeFormatter.ofPattern("yyyyMM"));
-        return yearMonth;
+        return YearMonth.parse(budget.getYearMonth(), DateTimeFormatter.ofPattern("yyyyMM"));
     }
 
     public BigDecimal totalAmount(LocalDate start, LocalDate end) {
