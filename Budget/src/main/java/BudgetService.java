@@ -33,9 +33,11 @@ public class BudgetService {
 
             int dayOfMonth = yearMonth.lengthOfMonth();
             BigDecimal days;
+            LocalDate overlappingStart;
+            LocalDate overlappingEnd;
             if (startYearMonth.equals(endYearMonth)) {
-                LocalDate overlappingStart = start;
-                LocalDate overlappingEnd = end;
+                overlappingStart = start;
+                overlappingEnd = end;
 //                days = new BigDecimal(DAYS.between(overlappingStart, overlappingEnd) + 1);
             } else if (yearMonth.equals(startYearMonth)) {
                 LocalDate overlappingStart = start;
